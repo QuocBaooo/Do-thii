@@ -2,151 +2,317 @@
 
 \usetheme{Madrid}
 
+% tiếng Việt cho pdflatex
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
 \usepackage{amsmath}
 \usepackage{tikz}
 
+% màu pastel xanh
+\definecolor{pastelblue}{RGB}{200,230,255}
+\definecolor{softblue}{RGB}{150,200,235}
+\definecolor{deepblue}{RGB}{60,120,170}
+
+\setbeamercolor{structure}{fg=deepblue}
+\setbeamercolor{frametitle}{bg=pastelblue, fg=black}
+
 \title{Giới thiệu Lý thuyết Đồ thị}
-\author{Nhóm Do-thii}
+\author{Nhóm 2}
 \date{\today}
 
 \begin{document}
 
-% Trang tiêu đề
+%------------------------------------------------
 \frame{\titlepage}
 
-%---------------------------------
-
+%------------------------------------------------
 \begin{frame}{Mục lục}
 \tableofcontents
 \end{frame}
 
-%---------------------------------
-\section{Giới thiệu}
+%------------------------------------------------
+\section{Định nghĩa đồ thị}
 
-\begin{frame}{Lý thuyết đồ thị}
+\begin{frame}{Định nghĩa}
 
-Lý thuyết đồ thị là một nhánh của toán học nghiên cứu về:
-
-\begin{itemize}
-\item Các đỉnh (Vertices)
-\item Các cạnh (Edges)
-\item Mối quan hệ giữa các đỉnh
-\end{itemize}
-
-Một đồ thị được ký hiệu:
+Đồ thị được ký hiệu:
 
 \[
-G = (V, E)
+G = (V,E)
 \]
 
 Trong đó:
 
 \begin{itemize}
-\item $V$ : tập các đỉnh
-\item $E$ : tập các cạnh
+\item $G$ : đồ thị (Graph)
+\item $V$ : tập các đỉnh (Vertices)
+\item $E$ : tập các cạnh (Edges)
 \end{itemize}
 
 \end{frame}
 
-%---------------------------------
-\begin{frame}{Ứng dụng của đồ thị}
-
-Lý thuyết đồ thị được ứng dụng trong nhiều lĩnh vực:
-
-\begin{itemize}
-\item Mạng xã hội
-\item Mạng máy tính
-\item Google Maps
-\item Hệ thống giao thông
-\item Lập lịch
-\end{itemize}
-
-\end{frame}
-
-%---------------------------------
-\section{Các khái niệm cơ bản}
-
-\begin{frame}{Đỉnh và Cạnh}
-
-\textbf{Đỉnh (Vertex)}
-
-\begin{itemize}
-\item Là các điểm của đồ thị
-\end{itemize}
-
-\textbf{Cạnh (Edge)}
-
-\begin{itemize}
-\item Là đường nối giữa hai đỉnh
-\end{itemize}
-
-\end{frame}
-
-%---------------------------------
-
-\begin{frame}{Ví dụ về đồ thị}
+%------------------------------------------------
+\begin{frame}{Ví dụ đồ thị}
 
 \begin{center}
 
 \begin{tikzpicture}
 
-\node (A) at (0,0) {A};
-\node (B) at (2,0) {B};
-\node (C) at (1,1.5) {C};
-\node (D) at (3,1.5) {D};
+\node[circle,draw] (A) at (0,0) {A};
+\node[circle,draw] (B) at (2,1) {B};
+\node[circle,draw] (C) at (2,-1) {C};
+\node[circle,draw] (D) at (4,0) {D};
+
+\draw (A)--(B);
+\draw (A)--(C);
+\draw (B)--(D);
+\draw (C)--(D);
+
+\end{tikzpicture}
+
+\end{center}
+
+Ví dụ:
+
+\[
+V=\{A,B,C,D\}
+\]
+
+\[
+E=\{AB,AC,BD,CD\}
+\]
+
+\end{frame}
+
+%------------------------------------------------
+\section{Đồ thị vô hướng}
+
+\begin{frame}{Đồ thị vô hướng}
+
+Trong đồ thị vô hướng:
+
+\[
+(u,v)=(v,u)
+\]
+
+Điều này nghĩa là cạnh không có hướng.
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Ví dụ đồ thị vô hướng}
+
+\begin{center}
+
+\begin{tikzpicture}
+
+\node[circle,draw] (A) at (0,0) {A};
+\node[circle,draw] (B) at (2,1) {B};
+\node[circle,draw] (C) at (2,-1) {C};
 
 \draw (A)--(B);
 \draw (A)--(C);
 \draw (B)--(C);
+
+\end{tikzpicture}
+
+\end{center}
+
+Ví dụ:
+
+\[
+E=\{AB,AC,BC\}
+\]
+
+Ở đây:
+
+\[
+AB = BA
+\]
+
+\end{frame}
+
+%------------------------------------------------
+\section{Đồ thị có hướng}
+
+\begin{frame}{Đồ thị có hướng}
+
+Trong đồ thị có hướng:
+
+\[
+(u,v) \ne (v,u)
+\]
+
+Cạnh có hướng được gọi là \textbf{cung}.
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Ví dụ đồ thị có hướng}
+
+\begin{center}
+
+\begin{tikzpicture}[->]
+
+\node[circle,draw] (A) at (0,0) {A};
+\node[circle,draw] (B) at (2,1) {B};
+\node[circle,draw] (C) at (2,-1) {C};
+
+\draw (A)->(B);
+\draw (B)->(C);
+\draw (C)->(A);
+
+\end{tikzpicture}
+
+\end{center}
+
+Ví dụ:
+
+\[
+E=\{(A,B),(B,C),(C,A)\}
+\]
+
+Ở đây:
+
+\[
+(A,B)\ne(B,A)
+\]
+
+\end{frame}
+
+%------------------------------------------------
+\section{Bậc của đỉnh}
+
+\begin{frame}{Bậc của đỉnh}
+
+Bậc của đỉnh là số cạnh nối với đỉnh đó.
+
+Ký hiệu:
+
+\[
+deg(v)
+\]
+
+Trong đó:
+
+\begin{itemize}
+\item $deg$ : degree (bậc)
+\item $v$ : đỉnh của đồ thị
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Ví dụ bậc của đỉnh}
+
+\begin{center}
+
+\begin{tikzpicture}
+
+\node[circle,draw] (A) at (0,0) {A};
+\node[circle,draw] (B) at (2,1) {B};
+\node[circle,draw] (C) at (2,-1) {C};
+\node[circle,draw] (D) at (4,0) {D};
+
+\draw (A)--(B);
+\draw (A)--(C);
+\draw (A)--(D);
 \draw (B)--(D);
 
 \end{tikzpicture}
 
 \end{center}
 
+Bậc các đỉnh:
+
+\[
+deg(A)=3
+\]
+
+\[
+deg(B)=2
+\]
+
+\[
+deg(C)=1
+\]
+
+\[
+deg(D)=2
+\]
+
 \end{frame}
 
-%---------------------------------
+%------------------------------------------------
+\section{Định lý tổng bậc}
 
-\begin{frame}{Bậc của đỉnh}
+\begin{frame}{Định lý}
 
-Bậc của một đỉnh là số cạnh nối với đỉnh đó.
+Trong đồ thị vô hướng:
 
-Ví dụ:
+\[
+\sum deg(v)=2m
+\]
+
+Trong đó:
 
 \begin{itemize}
-\item deg(A) = 2
-\item deg(B) = 3
-\item deg(C) = 2
+\item $deg(v)$ : bậc của đỉnh $v$
+\item $\sum$ : tổng tất cả các bậc
+\item $m$ : số cạnh của đồ thị
 \end{itemize}
 
 \end{frame}
 
-%---------------------------------
+%------------------------------------------------
+\begin{frame}{Ví dụ}
 
-\begin{frame}{Đường đi và Chu trình}
+\begin{columns}
 
-\textbf{Đường đi (Path)}
-
-\begin{itemize}
-\item Là dãy các đỉnh liên tiếp nối với nhau bằng các cạnh
-\end{itemize}
-
-\textbf{Chu trình (Cycle)}
-
-\begin{itemize}
-\item Là đường đi bắt đầu và kết thúc tại cùng một đỉnh
-\end{itemize}
-
-\end{frame}
-
-%---------------------------------
-
-\begin{frame}
+\column{0.45\textwidth}
 
 \centering
-\Huge Cảm ơn!
+\begin{tikzpicture}[scale=0.9]
+
+\node[circle,draw] (A) at (0,0) {A};
+\node[circle,draw] (B) at (2,1) {B};
+\node[circle,draw] (C) at (2,-1) {C};
+
+\draw (A)--(B);
+\draw (A)--(C);
+\draw (B)--(C);
+
+\end{tikzpicture}
+
+\column{0.55\textwidth}
+
+Bậc các đỉnh:
+
+\[
+deg(A)=2,\quad deg(B)=2,\quad deg(C)=2
+\]
+
+Tổng bậc:
+
+\[
+2+2+2=6
+\]
+
+Số cạnh:
+
+\[
+m=3
+\]
+
+Ta có:
+
+\[
+2m=2\times3=6
+\]
+
+\end{columns}
 
 \end{frame}
-
 \end{document}
