@@ -16,16 +16,22 @@ Repository này được tạo để lưu trữ **slide thuyết trình, lý thu
 
 # 📑 Mục lục
 
-- [Giới thiệu](#giới-thiệu)
-- [Các khái niệm cơ bản](#các-khái-niệm-cơ-bản)
-- [Duyệt đồ thị](#duyệt-đồ-thị)
-  - [BFS](#bfs)
-  - [DFS](#dfs)
-- [Đường đi ngắn nhất](#đường-đi-ngắn-nhất)
-- [Cây khung nhỏ nhất](#cây-khung-nhỏ-nhất)
-- [Bài tập](#bài-tập)
-- [Cấu trúc dự án](#cấu-trúc-dự-án)
-
+- Giới thiệu
+- Các khái niệm cơ bản
+- Biểu diễn đồ thị trên máy tính
+  - Ma trận kề
+  - Danh sách cạnh
+  - Danh sách kề
+- Duyệt đồ thị
+  - BFS
+  - DFS
+- Đường đi trong đồ thị
+- Thuật toán đường đi ngắn nhất
+  - Dijkstra
+  - Bellman-Ford
+  - Floyd-Warshall
+- Đồ thị đặc biệt
+- Bài tập và Test
 ---
 
 # 👥 Thành viên
