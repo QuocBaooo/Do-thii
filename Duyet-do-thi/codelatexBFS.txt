@@ -1,0 +1,304 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+
+%================= LANGUAGE =================
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+%================= PACKAGE =================
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+%================= COLOR =================
+\definecolor{main1}{RGB}{102,126,234}
+\definecolor{main2}{RGB}{118,75,162}
+
+\setbeamercolor{frametitle}{fg=white,bg=main1}
+\setbeamercolor{title}{fg=white,bg=main2}
+
+%================= BACKGROUND =================
+\setbeamertemplate{background canvas}{
+\begin{tikzpicture}[remember picture,overlay]
+\path[left color=main1!20,right color=main2!20]
+(current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+%================= BOX =================
+\tcbset{
+  colback=white,
+  colframe=main1,
+  arc=3mm,
+  boxrule=0.8pt
+}
+
+%================= CODE =================
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{main2},
+  commentstyle=\color{green!50!black},
+  breaklines=true
+}
+
+%================= INFO =================
+\title{Thuật toán BFS (Breadth-First Search)}
+\author{Lê Văn Hoàng An}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%================= INTRO =================
+\section{Giới thiệu}
+
+\begin{frame}{Đồ thị là gì?}
+\begin{tcolorbox}
+\begin{itemize}
+\item \faProjectDiagram Đồ thị gồm tập đỉnh (Vertex) và cạnh (Edge)
+\item \faShareAlt Biểu diễn mối quan hệ giữa các đối tượng
+\item \faRandom Có thể là đồ thị vô hướng hoặc có hướng
+\item \faGlobe Ứng dụng: mạng xã hội, bản đồ, AI, hệ thống gợi ý
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\begin{tcolorbox}
+\textbf{Ví dụ thực tế:}
+\begin{itemize}
+\item Facebook: người dùng = đỉnh, kết bạn = cạnh
+\item Google Maps: địa điểm = đỉnh, đường đi = cạnh
+\end{itemize}
+\end{tcolorbox}
+\end{frame}
+
+%================= GRAPH =================
+\section{Minh họa}
+
+\begin{frame}{Minh họa đồ thị và BFS}
+\begin{columns}
+
+\column{0.5\textwidth}
+\begin{tikzpicture}[scale=1.1, every node/.style={circle, draw}]
+\node (A) at (0,0) {A};
+\node (B) at (2,1) {B};
+\node (C) at (2,-1) {C};
+\node (D) at (4,1) {D};
+\node (E) at (4,-1) {E};
+
+\draw (A)--(B);
+\draw (A)--(C);
+\draw (B)--(D);
+\draw (C)--(E);
+\end{tikzpicture}
+
+\column{0.5\textwidth}
+\begin{tcolorbox}
+\begin{itemize}
+\item \faPlay Bắt đầu từ A
+\item \faLayerGroup BFS duyệt theo từng lớp
+\item \faArrowRight A → B, C
+\item \faArrowRight Tiếp → D, E
+\end{itemize}
+\end{tcolorbox}
+
+\end{columns}
+\end{frame}
+
+%================= THEORY =================
+\section{Lý thuyết}
+
+\begin{frame}{Ý tưởng + Giả mã BFS}
+\begin{tcolorbox}
+\begin{itemize}
+\item \faBullseye Mục tiêu: duyệt theo từng lớp (level)
+\item \faDatabase Cấu trúc: Queue (FIFO)
+\item \faCheckCircle Mỗi đỉnh thăm đúng 1 lần
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+
+\begin{tcolorbox}
+\textbf{Quy trình thực hiện:}
+\begin{enumerate}
+\item Khởi tạo:
+\begin{itemize}
+\item Đánh dấu tất cả là chưa thăm
+\item Đưa đỉnh start vào queue
+\end{itemize}
+
+\item Lặp:
+\begin{itemize}
+\item Lấy đỉnh đầu $u$
+\item Xử lý $u$
+\item Duyệt các đỉnh kề $v$
+\item Nếu chưa thăm → thêm vào queue
+\end{itemize}
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\begin{tcolorbox}
+\textbf{Độ phức tạp:} $O(V + E)$
+\end{tcolorbox}
+\end{frame}
+
+%================= CODE =================
+\section{Cài đặt}
+
+\begin{frame}[fragile]{Code BFS (C++)}
+\begin{tcolorbox}
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+void BFS(int start, vector<vector<int>>& adj) {
+    vector<bool> visited(adj.size(), false);
+    queue<int> q;
+
+    visited[start] = true;
+    q.push(start);
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        // Xu ly dinh u
+        cout << u << " ";
+
+        for (int v : adj[u]) {
+            if (!visited[v]) {
+                visited[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+
+/*
+- Thoi gian: O(V + E)
+- Duyet theo tung lop
+- Dung trong tim duong ngan nhat
+*/
+\end{lstlisting}
+\end{tcolorbox}
+\end{frame}
+
+%================= EXAMPLE =================
+\section{Ví dụ}
+
+\begin{frame}{Ví dụ minh họa BFS}
+\begin{columns}
+
+\column{0.5\textwidth}
+\begin{tikzpicture}[scale=1.1, every node/.style={circle, draw}]
+\node (1) at (0,0) {1};
+\node (2) at (2,1) {2};
+\node (3) at (2,-1) {3};
+\node (4) at (4,1) {4};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+
+\column{0.5\textwidth}
+\begin{tcolorbox}
+\begin{itemize}
+\item \faRoute Thứ tự:
+\[
+1 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5
+\]
+\item \faLayerGroup Lớp:
+\begin{itemize}
+\item L0: 1
+\item L1: 2, 3
+\item L2: 4, 5
+\end{itemize}
+\end{itemize}
+\end{tcolorbox}
+
+\end{columns}
+\end{frame}
+
+%================= ANIMATION =================
+\section{Animation BFS}
+
+\begin{frame}{Minh họa BFS từng bước}
+\centering
+
+\begin{tikzpicture}[
+    scale=1.2,
+    every node/.style={circle, draw, minimum size=8mm},
+    visited/.style={fill=green!40},
+    current/.style={fill=yellow!60}
+]
+
+\node (1) at (0,0) {1};
+\node (2) at (2,1) {2};
+\node (3) at (2,-1) {3};
+\node (4) at (4,1) {4};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+
+\only<1>{\node[current] at (1) {1};}
+\only<2>{\node[visited] at (1) {1}; \node[current] at (2) {2}; \node[current] at (3) {3};}
+\only<3>{\node[visited] at (1) {1}; \node[visited] at (2) {2}; \node[visited] at (3) {3}; \node[current] at (4) {4};}
+\only<4>{\node[visited] at (1) {1}; \node[visited] at (2) {2}; \node[visited] at (3) {3}; \node[visited] at (4) {4}; \node[current] at (5) {5};}
+\only<5>{\node[visited] at (1) {1}; \node[visited] at (2) {2}; \node[visited] at (3) {3}; \node[visited] at (4) {4}; \node[visited] at (5) {5};}
+
+\end{tikzpicture}
+
+\vspace{0.5cm}
+\only<1>{Bắt đầu từ đỉnh 1}
+\only<2>{Thêm 2, 3 vào queue}
+\only<3>{Xử lý 2 → thêm 4}
+\only<4>{Xử lý 3 → thêm 5}
+\only<5>{Hoàn tất BFS}
+
+\end{frame}
+
+%================= APPLICATION =================
+\section{Ứng dụng}
+
+\begin{frame}{Ứng dụng của BFS}
+\begin{tcolorbox}
+\begin{itemize}
+\item \faRoute Tìm đường đi ngắn nhất (không trọng số)
+\item \faProjectDiagram Kiểm tra liên thông
+\item \faRobot AI, game, mê cung
+\item \faUsers Mạng xã hội (gợi ý bạn bè)
+\end{itemize}
+\end{tcolorbox}
+\end{frame}
+
+%================= END =================
+\begin{frame}{Kết luận}
+\begin{tcolorbox}
+\begin{itemize}
+\item BFS là thuật toán nền tảng
+\item Độ phức tạp tối ưu $O(V+E)$
+\item Rất quan trọng trong thực tế
+\end{itemize}
+\end{tcolorbox}
+
+\centering
+\vspace{0.5cm}
+\Huge{\textbf{Cảm ơn!}}
+\end{frame}
+
+\end{document}
