@@ -1,0 +1,175 @@
+\documentclass[10pt,xcolor={dvipsnames}]{beamer}
+
+\usetheme{Madrid}
+
+%================= LANGUAGE =================
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+%================= PACKAGE =================
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{shadows, skins}
+\usepackage{fontawesome5}
+\usepackage{colortbl}
+
+%================= COLOR =================
+\definecolor{main1}{RGB}{102,126,234}
+\definecolor{main2}{RGB}{118,75,162}
+
+\setbeamercolor{frametitle}{fg=white,bg=main1}
+\setbeamercolor{title}{fg=white,bg=main2}
+\setbeamercolor{structure}{fg=main1}
+
+%================= BACKGROUND =================
+\setbeamertemplate{background canvas}{
+\begin{tikzpicture}[remember picture,overlay]
+\path[left color=main1!10,right color=main2!10]
+(current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+%================= BOX STYLE =================
+\tcbset{
+  enhanced,
+  colback=white,
+  colframe=main1,
+  arc=2mm,
+  boxrule=1pt,
+  drop shadow
+}
+
+%================= INFO =================
+\title{Đường đi ngắn nhất trên đồ thị}
+\subtitle{Phân tích chuyên sâu Dijkstra \& Floyd-Warshall}
+\author{Phạm Gia Kiệt}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%--------------------------------
+\begin{frame}{Đặt vấn đề}
+\begin{tcolorbox}[title=\faQuestionCircle \quad Bài toán tìm đường]
+Cho đồ thị $G=(V, E)$ có trọng số. Tìm đường đi từ $u$ đến $v$ sao cho tổng trọng số các cạnh là nhỏ nhất.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item[\faMap] \textbf{Ứng dụng:} Google Maps, tìm tuyến đường xe bus, truyền gói tin trong mạng máy tính (Routing).
+    \item[\faExclamationTriangle] \textbf{Thử thách:} Đồ thị có thể rất lớn ($10^5$ đỉnh) hoặc có cạnh mang giá trị âm.
+\end{itemize}
+\end{frame}
+
+%--------------------------------
+\begin{frame}{1. Thuật toán Dijkstra (SSSP)}
+\begin{tcolorbox}[title=\faRoute \quad Nguyên lý Tham lam (Greedy)]
+Dijkstra tìm đường đi ngắn nhất từ \textbf{một đỉnh nguồn} đến tất cả các đỉnh khác.
+\end{tcolorbox}
+
+\textbf{Cơ chế hoạt động:}
+\begin{enumerate}
+    \item Duy trì mảng $d[u]$ là khoảng cách tạm thời từ nguồn đến $u$.
+    \item Luôn chọn đỉnh $u$ có $d[u]$ nhỏ nhất trong các đỉnh chưa "chốt".
+    \item \textbf{Thư giãn (Relaxation):} Với mỗi đỉnh $v$ kề $u$, nếu $d[v] > d[u] + w(u, v)$, ta cập nhật $d[v] = d[u] + w(u, v)$.
+\end{enumerate}
+
+
+
+\begin{itemize}
+    \item[\faCheck] \textbf{Ưu điểm:} Chạy cực nhanh với Priority Queue ($O(M \log N)$).
+    \item[\faTimes] \textbf{Nhược điểm:} "Thất bại" hoàn toàn nếu đồ thị có cạnh âm.
+\end{itemize}
+\end{frame}
+
+%--------------------------------
+\begin{frame}[fragile]{Cài đặt Dijkstra (C++)}
+\begin{tcolorbox}[title=\faCode \quad Tối ưu với Priority Queue]
+\begin{scriptsize}
+\begin{verbatim}
+void dijkstra(ll s) {
+    for(ll i=1; i<=n; i++) d[i] = INF;
+    priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> q;
+    d[s] = 0; q.push({0, s});
+    while(!q.empty()){
+        auto [du, u] = q.top(); q.pop();
+        if(du != d[u]) continue; // Đỉnh u đã được tối ưu trước đó
+        for(auto [v, w] : adj[u]) {
+            if(d[v] > du + w) {
+                d[v] = du + w;
+                q.push({d[v], v});
+            }
+        }
+    }
+}
+\end{verbatim}
+\end{scriptsize}
+\end{tcolorbox}
+\end{frame}
+
+%--------------------------------
+\begin{frame}{2. Thuật toán Floyd-Warshall (APSP)}
+\begin{tcolorbox}[colframe=main2, title=\faArrowsAlt \quad Tư tưởng Quy hoạch động]
+Tìm đường đi ngắn nhất giữa \textbf{mọi cặp đỉnh} $(u, v)$ trên đồ thị.
+\end{tcolorbox}
+
+\textbf{Cơ chế hoạt động:}
+\begin{itemize}
+    \item Sử dụng ma trận $d[i][j]$ để lưu khoảng cách từ $i$ đến $j$.
+    \item Thử đi xuyên qua lần lượt từng đỉnh trung gian $k$ (từ $1$ đến $N$).
+    \item Nếu việc đi từ $i \to k \to j$ ngắn hơn đi trực tiếp $i \to j$, ta cập nhật lại bảng khoảng cách.
+\end{itemize}
+
+
+
+\begin{itemize}
+    \item[\faCheck] \textbf{Ưu điểm:} Code siêu ngắn, chạy được với cạnh âm.
+    \item[\faClock] \textbf{Giới hạn:} $O(N^3)$ - Chỉ dùng khi đồ thị nhỏ ($N \le 500$).
+\end{itemize}
+\end{frame}
+
+%--------------------------------
+\begin{frame}[fragile]{Cài đặt Floyd-Warshall (C++)}
+\begin{tcolorbox}[colframe=main2, title=\faCode \quad Ma trận kề & 3 vòng For]
+\begin{scriptsize}
+\begin{verbatim}
+// Khởi tạo ban đầu: d[i][j] = (i==j ? 0 : INF)
+// Sau khi nhập cạnh: d[u][v] = min(d[u][v], w)
+for(ll k=1; k<=n; k++) {
+    for(ll i=1; i<=n; i++) {
+        for(ll j=1; j<=n; j++) {
+            if(d[i][k] != INF && d[k][j] != INF) {
+                d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+            }
+        }
+    }
+}
+\end{verbatim}
+\end{scriptsize}
+\end{tcolorbox}
+\end{frame}
+
+%--------------------------------
+\begin{frame}{So sánh & Tổng kết}
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|l|c|c|}
+\hline
+\rowcolor{main1!20} \textbf{Tiêu chí} & \textbf{Dijkstra} & \textbf{Floyd-Warshall} \\ \hline
+\textbf{Kiểu bài} & 1 nguồn $\to$ Nhiều đích & Mọi cặp đỉnh \\ \hline
+\textbf{Trọng số âm} & \textcolor{red}{Không hỗ trợ} & \textcolor{ForestGreen}{Hỗ trợ tốt} \\ \hline
+\textbf{Độ phức tạp} & $O(M \log N)$ & $O(N^3)$ \\ \hline
+\textbf{Cấu trúc lưu} & Danh sách kề & Ma trận kề \\ \hline
+\end{tabular}
+
+\vspace{0.4cm}
+\begin{tcolorbox}[boxrule=0.5pt, colback=yellow!5]
+\small \faLightbulb \quad \textbf{Lời khuyên từ "Kiệt":} Nếu đề bài yêu cầu tìm đường đi giữa quá nhiều cặp đỉnh mà $N$ lại nhỏ, Floyd-Warshall là "vua". Ngược lại, đồ thị chằng chịt $N, M$ lớn thì hãy tin tưởng Dijkstra.
+\end{tcolorbox}
+\end{frame}
+
+\end{document}
