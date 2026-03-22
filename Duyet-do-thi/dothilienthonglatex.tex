@@ -48,7 +48,7 @@
 }
 
 %================= INFO =================
-\title{BFS và Đồ thị liên thông}
+\title{Đồ thị liên thông}
 \author{Lê Văn Hoàng An}
 \date{\today}
 
@@ -59,7 +59,8 @@
 %================= THEORY =================
 \section{Lý thuyết}
 
-\begin{frame}{BFS và Đồ thị liên thông}
+%---------- SLIDE 1 ----------
+\begin{frame}{Khái niệm và kiểm tra liên thông}
 \begin{tcolorbox}
 \textbf{\faProjectDiagram Khái niệm đồ thị liên thông}
 \begin{itemize}
@@ -69,7 +70,7 @@
 \end{itemize}
 \end{tcolorbox}
 
-\vspace{0.2cm}
+\vspace{0.3cm}
 
 \begin{tcolorbox}
 \textbf{\faSearch Kiểm tra liên thông}
@@ -80,9 +81,10 @@
 \item \faExclamationTriangle Còn đỉnh chưa thăm → không liên thông
 \end{itemize}
 \end{tcolorbox}
+\end{frame}
 
-\vspace{0.2cm}
-
+%---------- SLIDE 2 ----------
+\begin{frame}{Liên hệ BFS và đếm thành phần}
 \begin{tcolorbox}
 \textbf{\faLayerGroup Liên hệ BFS}
 \begin{itemize}
@@ -92,7 +94,7 @@
 \end{itemize}
 \end{tcolorbox}
 
-\vspace{0.2cm}
+\vspace{0.3cm}
 
 \begin{tcolorbox}
 \textbf{\faCogs Đếm thành phần liên thông}
@@ -103,7 +105,6 @@
 \end{itemize}
 \end{tcolorbox}
 \end{frame}
-
 %================= VISUAL =================
 \section{Minh họa}
 
@@ -139,30 +140,6 @@
 %================= CODE =================
 \section{Cài đặt}
 
-\begin{frame}[fragile]{Code BFS}
-\begin{tcolorbox}
-\begin{lstlisting}
-void bfs(int start, vector<vector<int>>& adj) {
-    vector<bool> visited(adj.size(), false);
-    queue<int> q;
-
-    visited[start] = true;
-    q.push(start);
-
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
-
-        for (int v : adj[u]) {
-            if (!visited[v]) {
-                visited[v] = true;
-                q.push(v);
-            }
-        }
-    }
-}
-\end{lstlisting}
-\end{tcolorbox}
-\end{frame}
 
 \begin{frame}[fragile]{Code DFS kiểm tra liên thông}
 \begin{tcolorbox}
@@ -213,7 +190,7 @@ int dem_tplt(int n) {
 \begin{frame}{Kết luận}
 \begin{tcolorbox}
 \begin{itemize}
-\item \faStream BFS: duyệt theo lớp
+\item \faStream BFS: duyệt theo lớp tìm đường đi ngắn nhất
 \item \faProjectDiagram DFS: kiểm tra liên thông
 \item \faRocket Ứng dụng rộng trong thực tế
 \end{itemize}
