@@ -35,10 +35,10 @@ Repository này được tạo để lưu trữ **slide thuyết trình, lý thu
 
 | STT | Họ và Tên | Vai trò | Nhiệm vụ cụ thể | Trạng thái |
 | :--: | :--- | :--- | :--- | :---: |
-| 1 | **Trần Quốc Bảo** | Trưởng nhóm | Phân công nhiệm vụ, làm phần giới thiệu, các khái niệm cơ bản và biểu diễn đồ thị | ✅ |
-| 2 | **Lê Văn Hoàng       An** | Thành viên | Làm phần duyệt đồ thị (DFS, BFS), đồ thị liên thông | ✅ |
-| 3 | **Phạm Gia Kiệt** | Thành viên | Làm phần đường đi trong đồ thị, đường đi ngắn nhất | ✅ |
+| 1 | **Trần Quốc Bảo** | Trưởng nhóm | Phân công nhiệm vụ, Phụ trách phần giới thiệu, các khái niệm cơ bản và biểu diễn đồ thị | ✅ |
+| 2 | **Lê Văn Hoàng       An** | Thành viên | Phụ trách nội dung phần duyệt đồ thị (DFS, BFS), đồ thị liên thông | ✅ |
+| 3 | **Phạm Gia Kiệt** | Thành viên | Phụ trách nội dung phần đường đi trong đồ thị, đường đi ngắn nhất | ✅ |
 
 ---
 
-⭐ Dự án được tạo nhằm mục đích **học tập và thuyết trình về Lý thuyết đồ thị**.
+⭐ Dự án được tạo nhằm mục đích **Học tập và thuyết trình về Lý thuyết đồ thị**.
